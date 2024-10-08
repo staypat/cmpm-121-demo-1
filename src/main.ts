@@ -21,7 +21,17 @@ button.addEventListener("click", () => {
 counterText.innerHTML = `${counter} sparks`;
 app.append(counterText);
 
-setInterval(() => {
-    counter++;
-    counterText.innerHTML = `${counter} sparks`;
-}, 1000);
+// setInterval(() => {
+//     counter++;
+//     counterText.innerHTML = `${counter} sparks`;
+// }, 1000);
+
+let lastTime = performance.now();
+requestAnimationFrame(function increaseCounter(){
+    const currentTime = performance.now();
+    const deltaTime = currentTime - lastTime;
+    counter += deltaTime / 1000;
+    counterText.innerHTML = `${Math.floor(counter)} sparks`;
+    lastTime = currentTime;
+    requestAnimationFrame(increaseCounter);
+})
