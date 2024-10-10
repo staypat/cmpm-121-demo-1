@@ -33,23 +33,27 @@ app.append(passiveGainText)
 
 const upgradeButtons: { button: HTMLButtonElement, cost: number }[] = [];
 
-function addUpgradeButton(name: string, cost: number, growthRate: number){
+function addUpgradeButton(name: string, price: number, growthRate: number){
     let timesPurchased = 0;
     const growthButton = document.createElement("button");
     const purchaseText = document.createElement("p");
     purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
-    growthButton.innerHTML = `${name} Cost: ${cost} sparks`;
+    growthButton.innerHTML = `${name} Cost: ${price.toFixed(1)} sparks`;
     app.append(growthButton);
     app.append(purchaseText);
     updateButtonState();
-    upgradeButtons.push({ button: growthButton, cost: cost });
+    upgradeButtons.push({ button: growthButton, cost: price });
     growthButton.addEventListener("click", () => {
-        if(counter >= cost){
+        if(counter >= price){
             counterGrowthRate += growthRate;
-            counter -= cost;
+            counter -= price;
             timesPurchased += 1;
+            price *= 1.15;
             passiveGainText.innerHTML = `Sparks per second: ${counterGrowthRate.toFixed(1)}`;
             purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
+            growthButton.innerHTML = `${name} Cost: ${price.toFixed(1)} sparks`;
+            const buttonIndex = upgradeButtons.findIndex(upgrade => upgrade.button === growthButton);
+            upgradeButtons[buttonIndex].cost = price;
             updateButtonState();
         }
     });
