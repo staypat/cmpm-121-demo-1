@@ -14,11 +14,19 @@ let counterGrowthRate = 0;
 const counterText = document.createElement("div");
 const passiveGainText = document.createElement("p");
 const button = document.createElement("button");
-button.innerHTML = "Click this ✨";
+button.innerHTML = "🔮";
+button.style.fontSize = "150px";
+button.style.padding = "0";
+button.style.backgroundColor = "transparent";
+button.style.borderRadius = "50%";
 app.append(button);
 button.addEventListener("click", () => {
     counter++;
     counterText.innerHTML = `${counter} sparks`;
+    button.style.fontSize = "148.5px";
+    setTimeout(() => {
+        button.style.fontSize = "150px";
+    }, 200);
     updateButtonState();
 });
 counterText.innerHTML = `${counter} sparks`;
