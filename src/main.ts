@@ -41,32 +41,46 @@ app.append(passiveGainText);
 
 const upgradeButtons: { button: HTMLButtonElement; cost: number }[] = [];
 
-function addUpgradeButton(name: string, price: number, growthRate: number) {
-  let timesPurchased = 0;
-  const growthButton = document.createElement("button");
-  const purchaseText = document.createElement("p");
-  purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
-  growthButton.innerHTML = `${name} Cost: ${price.toFixed(1)} sparks`;
-  app.append(growthButton);
-  app.append(purchaseText);
-  updateButtonState();
-  upgradeButtons.push({ button: growthButton, cost: price });
-  growthButton.addEventListener("click", () => {
-    if (counter >= price) {
-      counterGrowthRate += growthRate;
-      counter -= price;
-      timesPurchased += 1;
-      price *= 1.15;
-      passiveGainText.innerHTML = `Sparks per second: ${counterGrowthRate.toFixed(1)}`;
-      purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
-      growthButton.innerHTML = `${name} Cost: ${price.toFixed(1)} sparks`;
-      const buttonIndex = upgradeButtons.findIndex(
-        (upgrade) => upgrade.button === growthButton,
-      );
-      upgradeButtons[buttonIndex].cost = price;
-      updateButtonState();
-    }
-  });
+interface Item {
+    name: string;
+    price: number;
+    growthRate: number;
+};
+
+const availableItems : Item[] = [
+    {name: "Glimmer", price: 10, growthRate: 0.1},
+    {name: "Flicker", price: 100,growthRate: 2},
+    {name: "Glow", price: 1000,growthRate: 50},
+];
+
+function addUpgradeButton() {
+    availableItems.forEach((item) => {
+        let timesPurchased = 0;
+        const growthButton = document.createElement("button");
+        const purchaseText = document.createElement("p");
+        purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
+        growthButton.innerHTML = `${item.name} Cost: ${item.price.toFixed(1)} sparks`;
+        app.append(growthButton);
+        app.append(purchaseText);
+        upgradeButtons.push({ button: growthButton, cost: item.price });
+        growthButton.addEventListener("click", () => {
+            if (counter >= item.price) {
+              counterGrowthRate += item.growthRate;
+              counter -= item.price;
+              timesPurchased++;
+              item.price *= 1.15;
+              passiveGainText.innerHTML = `Sparks per second: ${counterGrowthRate.toFixed(1)}`;
+              purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
+              growthButton.innerHTML = `${item.name} Cost: ${item.price.toFixed(1)} sparks`;
+              const buttonIndex = upgradeButtons.findIndex(
+                (upgrade) => upgrade.button === growthButton,
+              );
+              upgradeButtons[buttonIndex].cost = item.price;
+              updateButtonState();
+            }
+          });
+          updateButtonState();
+    });
 }
 
 function updateButtonState() {
@@ -74,6 +88,8 @@ function updateButtonState() {
     button.disabled = counter < cost;
   });
 }
+
+addUpgradeButton();
 // const growthButton = document.createElement("button");
 // growthButton.innerHTML = "10 sparks for +1 automatic growth rate";
 // app.append(growthButton);
@@ -91,11 +107,6 @@ function updateButtonState() {
 //         growthButton.disabled = false;
 //     }
 // }
-
-addUpgradeButton("Glimmer", 10, 0.1);
-addUpgradeButton("Flicker", 100, 2);
-addUpgradeButton("Glow", 1000, 50);
-
 let lastTime = performance.now();
 requestAnimationFrame(function increaseCounter() {
   const currentTime = performance.now();
