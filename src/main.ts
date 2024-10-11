@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "Magical Prowess";
+const gameName = "Magical Sparks";
 document.title = gameName;
 
 const header = document.createElement("h1");
@@ -45,12 +45,15 @@ interface Item {
     name: string;
     price: number;
     growthRate: number;
+    description: string;
 };
 
 const availableItems : Item[] = [
-    {name: "Glimmer", price: 10, growthRate: 0.1},
-    {name: "Flicker", price: 100,growthRate: 2},
-    {name: "Glow", price: 1000,growthRate: 50},
+    {name: "Glimmer", price: 10, growthRate: 0.1, description: "A glimmer of hope that grants you a short break from clicking."},
+    {name: "Flicker", price: 100,growthRate: 2, description: "Swish and flick--Wingardium Leviosa! Wait, flicker is related to lights here... Lumos?"},
+    {name: "Glow", price: 1000,growthRate: 50, description: "Glowing with pride, this upgrade will make you shine."},
+    {name: "Dazzle", price: 5000, growthRate: 200, description: "Reality twinkles; sunglasses optional."},
+    {name: "Flare", price: 20000, growthRate: 800, description: "A fiery flourish that summons both fireflies and fancies. Hey that's good alliteration!"},
 ];
 
 function addUpgradeButton() {
@@ -60,6 +63,7 @@ function addUpgradeButton() {
         const purchaseText = document.createElement("p");
         purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
         growthButton.innerHTML = `${item.name} Cost: ${item.price.toFixed(1)} sparks`;
+        growthButton.title = item.description;
         app.append(growthButton);
         app.append(purchaseText);
         upgradeButtons.push({ button: growthButton, cost: item.price });
