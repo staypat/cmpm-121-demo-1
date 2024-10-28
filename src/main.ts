@@ -97,8 +97,13 @@ const PRICE_INCREASE_MULTIPLIER = 1.15;
 function addUpgradeButtons() {
   availableItems.forEach((item) => {
     let timesPurchased = 0;
-    const growthButton = createButtonElement(`${item.name} Cost: ${item.price.toFixed(1)} sparks`, item.description);
-    const purchaseText = createParagraphElement(`Times purchased: ${timesPurchased}`);
+    const growthButton = createButtonElement(
+      `${item.name} Cost: ${item.price.toFixed(1)} sparks`,
+      item.description,
+    );
+    const purchaseText = createParagraphElement(
+      `Times purchased: ${timesPurchased}`,
+    );
 
     app.append(growthButton);
     app.append(purchaseText);
@@ -124,13 +129,16 @@ function processPurchase(item: Item, button: HTMLButtonElement) {
   button.innerHTML = `${item.name} Cost: ${item.price.toFixed(1)} sparks`;
 
   const buttonIndex = upgradeButtons.findIndex(
-    (upgrade) => upgrade.button === button
+    (upgrade) => upgrade.button === button,
   );
   upgradeButtons[buttonIndex].cost = item.price;
   updateButtonState();
 }
 
-function updatePurchaseText(purchaseText: HTMLParagraphElement, timesPurchased: number) {
+function updatePurchaseText(
+  purchaseText: HTMLParagraphElement,
+  timesPurchased: number,
+) {
   purchaseText.innerHTML = `Times purchased: ${timesPurchased}`;
 }
 
