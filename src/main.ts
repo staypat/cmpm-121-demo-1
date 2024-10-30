@@ -9,6 +9,8 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
+const BUTTON_HOVER_SIZE = 1.05;
+const BUTTON_DEFAULT_SIZE = 1.0;
 let counter: number = 0;
 let counterGrowthRate = 0;
 const counterText = document.createElement("div");
@@ -28,6 +30,12 @@ button.addEventListener("click", () => {
     button.style.fontSize = "150px";
   }, 200);
   updateButtonState();
+});
+button.addEventListener("mouseover", () => {
+  button.style.transform = `scale(${BUTTON_HOVER_SIZE})`;
+});
+button.addEventListener("mouseout", () => {
+  button.style.transform = `scale(${BUTTON_DEFAULT_SIZE})`;
 });
 counterText.innerHTML = `${counter} sparks`;
 passiveGainText.innerHTML = `Sparks per second: ${counterGrowthRate.toFixed(1)}`;
